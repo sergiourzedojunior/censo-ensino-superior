@@ -1,6 +1,16 @@
-
 import pandas as pd
 import os
+
+import pandas as pd
+from prophet import Prophet
+
+import plotly.graph_objects as go
+import pandas as pd
+import numpy as np
+
+import plotly.graph_objects as go
+import pandas as pd
+import numpy as np
 
 # Define the file paths
 file_paths = [os.path.join(r"D:\OneDrive\censo ensino superior\microdados_censo_da_educacao_superior_" + str(year), 
@@ -91,10 +101,6 @@ df_grouped = df_selected.groupby(['NU_ANO_CENSO', 'NO_CINE_AREA_DETALHADA'])[['Q
 # # Print the grouped DataFrame
 # print(df_grouped)
 
-
-import pandas as pd
-from prophet import Prophet
-
 # Resetando o índice do DataFrame agrupado para facilitar o acesso aos dados
 df_grouped_reset = df_grouped.reset_index()
 df_grouped_reset.to_csv(r'D:\OneDrive\censo ensino superior\df_grouped_reset.csv')
@@ -149,14 +155,6 @@ mape_insc = forecast_insc['percentage_error'].mean()
 # print("\nPredictions and Percentage Errors for QT_INSCRITO_TOTAL:")
 # print(forecast_insc[['ds', 'yhat', 'y', 'percentage_error']])
 
-
-
-import plotly.graph_objects as go
-import pandas as pd
-import numpy as np
-
-# Suponha que 'forecast_vg' seja o seu DataFrame já com as previsões do Prophet
-
 # Separar dados até 2022 e dados de 2023
 df_until_2022 = forecast_vg[forecast_vg['ds'] <= '2022-12-31']
 df_2023 = forecast_vg[forecast_vg['ds'] > '2022-12-31']
@@ -205,11 +203,6 @@ fig_comparison.update_layout(
 # Mostrar o gráfico
 fig_comparison.show()
 
-
-
-import plotly.graph_objects as go
-import pandas as pd
-import numpy as np
 
 # Suponha que 'forecast_insc' seja o seu DataFrame já com as previsões do Prophet
 
@@ -261,12 +254,6 @@ fig_comparison.update_layout(
 # Mostrar o gráfico
 fig_comparison.show()
 
-
-
-import pandas as pd
-
-# Supondo que você tenha os dados para o ano de 2023 em df_selected e forecast_vg
-
 # Convertendo 'QT_VG_TOTAL' para numérico para evitar erros de tipo
 df_selected['QT_VG_TOTAL'] = pd.to_numeric(df_selected['QT_VG_TOTAL'], errors='coerce')
 
@@ -308,10 +295,6 @@ forecast_distributed_2023 = forecast_distributed[forecast_distributed['NU_ANO_CE
 final_forecast = pd.concat([final_forecast, forecast_distributed_2023[['NU_ANO_CENSO', 'SG_UF', 'yhat_adjusted', 'QT_VG_TOTAL', 'error_percentage']]])
 
 
-import pandas as pd
-import plotly.graph_objects as go
-
-# Suponha que `final_forecast` seja o DataFrame com as colunas 'SG_UF', 'yhat_adjusted', 'QT_VG_TOTAL', e 'NU_ANO_CENSO'
 # Atualizar a média móvel no DataFrame para todos os anos e arredondar
 final_forecast['rolling_yhat_adjusted'] = final_forecast.groupby('SG_UF')['yhat_adjusted'].transform(lambda x: x.rolling(window=3, min_periods=1).mean()).round(2)
 
@@ -325,17 +308,19 @@ latest_forecasts = final_forecast.drop_duplicates(subset=['SG_UF'], keep='last')
 # Criar o gráfico com linhas para 'yhat_adjusted' e 'QT_VG_TOTAL'
 fig = go.Figure()
 
+
 uf_dropdown = final_forecast['SG_UF'].unique()
 for uf in uf_dropdown:
     filtered_df = final_forecast[final_forecast['SG_UF'] == uf]
-    latest_data = latest_forecasts[latest_forecasts['SG_UF'] == uf]  # Dados de 2023 para MA_yhat_adjusted
+    latest_data = latest_forecasts[latest_forecasts['SG_UF'] == uf]
     fig.add_trace(go.Scatter(x=filtered_df['NU_ANO_CENSO'], y=filtered_df['yhat_adjusted'].round(2),
                              mode='lines+markers',
                              name=f'{uf} Previsão'))
     fig.add_trace(go.Scatter(x=filtered_df['NU_ANO_CENSO'], y=filtered_df['QT_VG_TOTAL'].round(2),
                              mode='lines+markers',
                              name=f'{uf} Real'))
-    fig.add_trace(go.Scatter(x=latest_data['NU_ANO_CENSO'], y=latest_data['MA_yhat_adjusted'],
+    # Atualizar ano para 2023 na previsão de 2023
+    fig.add_trace(go.Scatter(x=[latest_data['NU_ANO_CENSO'].values[0] + 1], y=latest_data['MA_yhat_adjusted'],
                              mode='markers',
                              marker=dict(size=10, color='green'),
                              name=f'{uf} Previsão 2023'))
@@ -374,16 +359,11 @@ fig.update_layout(
 # Mostrar o gráfico
 fig.show()
 
-
-
 forecast_vg.to_csv(r'D:\OneDrive\censo ensino superior\forecast_vg.csv')
-
 
 forecast_insc.to_csv(r'D:\OneDrive\censo ensino superior\forecast_insc.csv')
 
-
 final_forecast.to_csv(r'D:\OneDrive\censo ensino superior\final_forecast.csv')
-
 
 df_selected.to_csv(r'D:\OneDrive\censo ensino superior\df_selected.csv')
 
