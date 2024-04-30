@@ -54,18 +54,18 @@ for uf in uf_dropdown:
 buttons = [dict(label='All',
                 method='update',
                 args=[{'visible': [True] * len(uf_dropdown) * 3},
-                      {'title': 'Adjusted Forecast and Real Values by UF'}])]
+                      {'title': 'Vacancies - Adjusted Forecast and Real Values by UF'}])]
 for i, uf in enumerate(uf_dropdown):
     visibility = [False] * len(uf_dropdown) * 3
     visibility[i * 3:(i + 1) * 3] = [True, True, True]  # Visibility for forecast, real, and forecast 2023
     buttons.append(dict(label=uf,
                         method='update',
                         args=[{'visible': visibility},
-                              {'title': f'Forecast and Real Values for {uf}'}]))
+                              {'title': f'Vacancies - Forecast and Real Values for {uf}'}]))
 
 # Update the graph layout with the dropdown and style details
 fig.update_layout(
-    title='Adjusted Forecast and Real Values by UF',
+    title='Vacancies - Adjusted Forecast and Real Values by UF',
     xaxis_title='Year',
     yaxis_title='Values',
     legend_title='Series',
