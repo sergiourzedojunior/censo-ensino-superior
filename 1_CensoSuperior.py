@@ -69,6 +69,7 @@ st.markdown("---")  # Markdown syntax for a horizontal line
 # Ensure all data is loaded upfront
 df_unique_count_IES_UF = load_df_unique_count_IES_UF().drop(columns=['Unnamed: 0'])
 df_unique_count_IES_UF.reset_index(drop=True, inplace=True)
+df_selected = load_df_selected()  # Load df_selected here
 
 # Rounding the specific columns to one decimal place
 df_unique_count_IES_UF['ProporçãoBR'] = df_unique_count_IES_UF['ProporçãoBR'].apply(lambda x: round(x, 1))
@@ -77,7 +78,7 @@ df_unique_count_IES_UF['Proporção_Região'] = df_unique_count_IES_UF['Proporç
 # Display data
 col1, col2, col3, col4 = st.columns(4)
 unique_count_IES = df_unique_count_IES_UF['QTD_EscolasMed'].sum()
-unique_count_MUNIC = len(df_unique_count_IES_UF['UF'].unique())
+unique_count_MUNIC = df_selected['CO_MUNICIPIO'].nunique()
 
 col1.metric(label="**Quantidade de Escolas de Medicina no período:**", value=unique_count_IES)
 col2.metric(label="**Quantidade de Municípios com Escolas de Medicina no período:**", value=unique_count_MUNIC)
@@ -87,3 +88,4 @@ styled_df = df_unique_count_IES_UF.style.background_gradient(subset=['Proporçã
 
 # Display styled DataFrame in Streamlit
 st.dataframe(styled_df)
+
