@@ -96,7 +96,8 @@ fig_vg = create_prediction_plot(df_vg, 'Vacancy Predictions Overview with Growth
 fig_insc = create_prediction_plot(df_insc, 'Inscription Predictions Overview with Growth Rates', 'ds', 'yhat', 'y')
 
 # Displaying the plots in Streamlit
-st.title('Education Data Dashboard - Medical Courses')
+
+st.title('Education Data Dashboard - Medical Courses 🩺')
 st.header('Grouped Data Overview')
 st.plotly_chart(fig_grouped_reset, use_container_width=True)
 st.header('Inscription Predictions Overview')

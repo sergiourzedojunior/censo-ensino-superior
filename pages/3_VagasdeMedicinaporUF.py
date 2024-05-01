@@ -81,4 +81,9 @@ fig.update_layout(
     hovermode='closest'
 )
 
+
+# Displaying the plots in Streamlit
+
+st.title('Education Data Dashboard - Medical Courses 🩺')
+st.header('Grouped Data Overview - State Vacancies')
 st.plotly_chart(fig, use_container_width=True)
