@@ -1,5 +1,7 @@
 # Data Processing and Analysis Pipeline for Censo Ensino Superior
 
+https://medicina-censo-inep-r3zrvitdiq-uc.a.run.app/
+
 This repository hosts a suite of Python scripts tailored for the processing and analysis of the Censo Ensino Superior dataset, with a specialized focus on medical education data. The scripts cover everything from data extraction and normalization to detailed analysis and predictions, culminating in a visualization dashboard using Streamlit.
 
 ## Project Structure
